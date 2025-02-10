@@ -6,14 +6,15 @@ import com.inventory.model.InventoryItem;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InventoryManagementUI extends JFrame {
-    private JTextField itemIdField, itemNameField, categoryField, quantityField, priceField, stockDateField, departmentField;
+    private JTextField itemIdField, itemNameField, categoryField, quantityField, priceField, departmentField;
+    private JSpinner stockDateSpinner; // Date picker
     private JTable table;
     private DefaultTableModel tableModel;
     private InventoryDAO inventoryDAO;
@@ -54,9 +55,11 @@ public class InventoryManagementUI extends JFrame {
         priceField = new JTextField();
         inputPanel.add(priceField);
 
-        inputPanel.add(new JLabel("Stock Date (YYYY-MM-DD):"));
-        stockDateField = new JTextField();
-        inputPanel.add(stockDateField);
+        inputPanel.add(new JLabel("Stock Date:"));
+        stockDateSpinner = new JSpinner(new SpinnerDateModel()); // Date picker
+        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(stockDateSpinner, "yyyy-MM-dd");
+        stockDateSpinner.setEditor(dateEditor);
+        inputPanel.add(stockDateSpinner);
 
         inputPanel.add(new JLabel("Department:"));
         departmentField = new JTextField();
@@ -126,7 +129,7 @@ public class InventoryManagementUI extends JFrame {
             item.setCategory(categoryField.getText());
             item.setQuantity(Integer.parseInt(quantityField.getText()));
             item.setPrice(Double.parseDouble(priceField.getText()));
-            item.setStockDate(java.sql.Date.valueOf(stockDateField.getText()));
+            item.setStockDate(new java.sql.Date(((Date) stockDateSpinner.getValue()).getTime())); // Get date from spinner
             item.setDepartment(departmentField.getText());
 
             buffer.add(item);
@@ -145,7 +148,7 @@ public class InventoryManagementUI extends JFrame {
             item.setCategory(categoryField.getText());
             item.setQuantity(Integer.parseInt(quantityField.getText()));
             item.setPrice(Double.parseDouble(priceField.getText()));
-            item.setStockDate(java.sql.Date.valueOf(stockDateField.getText()));
+            item.setStockDate(new java.sql.Date(((Date) stockDateSpinner.getValue()).getTime())); // Get date from spinner
             item.setDepartment(departmentField.getText());
 
             displayBufferData();
@@ -208,7 +211,7 @@ public class InventoryManagementUI extends JFrame {
         categoryField.setText("");
         quantityField.setText("");
         priceField.setText("");
-        stockDateField.setText("");
+        stockDateSpinner.setValue(new Date()); // Reset date to today
         departmentField.setText("");
     }
 
@@ -218,7 +221,7 @@ public class InventoryManagementUI extends JFrame {
         categoryField.setText(item.getCategory());
         quantityField.setText(String.valueOf(item.getQuantity()));
         priceField.setText(String.valueOf(item.getPrice()));
-        stockDateField.setText(new java.sql.Date(item.getStockDate().getTime()).toString());
+        stockDateSpinner.setValue(item.getStockDate()); // Set date in spinner
         departmentField.setText(item.getDepartment());
     }
 
@@ -231,7 +234,7 @@ public class InventoryManagementUI extends JFrame {
                     item.getCategory(),
                     item.getQuantity(),
                     item.getPrice(),
-                    item.getStockDate(),
+                    new SimpleDateFormat("yyyy-MM-dd").format(item.getStockDate()), // Format date
                     item.getDepartment()
             });
         }
@@ -248,7 +251,7 @@ public class InventoryManagementUI extends JFrame {
                         item.getCategory(),
                         item.getQuantity(),
                         item.getPrice(),
-                        item.getStockDate(),
+                        new SimpleDateFormat("yyyy-MM-dd").format(item.getStockDate()), // Format date
                         item.getDepartment()
                 });
             }
