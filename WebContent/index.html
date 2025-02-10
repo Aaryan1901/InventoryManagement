@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="scripts.js"></script>
+</head>
+<body>
+    <h1>Inventory Data Entry Form</h1>
+    <form id="inventoryForm">
+        <label for="itemId">Item ID:</label><br>
+        <input type="number" id="itemId" name="itemId" required><br><br>
+
+        <label for="itemName">Item Name:</label><br>
+        <input type="text" id="itemName" name="itemName" required><br><br>
+
+        <label for="category">Category:</label><br>
+        <input type="text" id="category" name="category" required><br><br>
+
+        <label for="quantity">Quantity:</label><br>
+        <input type="number" id="quantity" name="quantity" required><br><br>
+
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price" step="0.01" required><br><br>
+
+        <label for="stockDate">Stock Date:</label><br>
+        <input type="date" id="stockDate" name="stockDate" required><br><br>
+
+        <label for="department">Department:</label><br>
+        <input type="text" id="department" name="department" required><br><br>
+
+        <button type="button" onclick="commitToDatabase()">Commit to Database</button>
+        <button type="button" onclick="updateInventory()">Update Inventory</button>
+        <button type="button" onclick="fetchData()">Fetch Data</button>
+    </form>
+
+    <h2>Inventory Data</h2>
+    <pre id="inventoryData"></pre>
+</body>
+</html>
